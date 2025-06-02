@@ -1,4 +1,3 @@
-// ...otros imports...
 import { createContext, useContext, useState } from "react";
 
 const TransaccionesContext = createContext<any>(null);

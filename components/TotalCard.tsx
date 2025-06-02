@@ -33,6 +33,8 @@ export function TotalCard({
     setEditingLabel(false);
   };
 
+  const [showActions, setShowActions] = useState(false);
+
   return (
     <View style={styles.card}>
       {editing ? (
@@ -70,18 +72,50 @@ export function TotalCard({
           <Text style={styles.cardText}>
             {label}: ${value}
           </Text>
-          <Pressable
-            onPress={() => setEditingLabel(true)}
-            style={{ marginRight: 8 }}
-          >
-            <Text style={{ fontSize: 18 }}>✏️</Text>
-          </Pressable>
-          <Pressable onPress={() => setEditing(true)} style={{ marginLeft: 8 }}>
-            <Text style={{ fontSize: 18 }}>📝</Text>
-          </Pressable>
-          <Pressable onPress={onDelete} style={{ marginLeft: 8 }}>
-            <Text style={{ fontSize: 18, color: "red" }}>🗑️</Text>
-          </Pressable>
+          {!showActions ? (
+            <Pressable
+              onPress={() => setShowActions(true)}
+              style={{ marginLeft: 8 }}
+            >
+              <Text style={{ fontSize: 18 }}>✏️</Text>
+            </Pressable>
+          ) : (
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Pressable
+                onPress={() => {
+                  setEditingLabel(true);
+                  setShowActions(false);
+                }}
+                style={{ marginLeft: 8 }}
+              >
+                <Text style={{ fontSize: 18 }}>📝</Text>
+              </Pressable>
+              <Pressable
+                onPress={() => {
+                  setEditing(true);
+                  setShowActions(false);
+                }}
+                style={{ marginLeft: 8 }}
+              >
+                <Text style={{ fontSize: 18 }}>🔢</Text>
+              </Pressable>
+              <Pressable
+                onPress={() => {
+                  onDelete();
+                  setShowActions(false);
+                }}
+                style={{ marginLeft: 8 }}
+              >
+                <Text style={{ fontSize: 18, color: "red" }}>🗑️</Text>
+              </Pressable>
+              <Pressable
+                onPress={() => setShowActions(false)}
+                style={{ marginLeft: 8 }}
+              >
+                <Text style={{ fontSize: 18, color: "#888" }}>❌</Text>
+              </Pressable>
+            </View>
+          )}
         </View>
       )}
     </View>

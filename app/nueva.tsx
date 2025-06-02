@@ -32,7 +32,6 @@ export default function NuevaTransaccion() {
 
   const [descripcion, setDescripcion] = useState("");
   const [monto, setMonto] = useState("");
-  const [persona, setPersona] = useState("mio");
   const [origen, setOrigen] = useState("mp");
   const [esDeuda, setEsDeuda] = useState(false);
   const { agregar, agregarDeuda } = useTransacciones();
@@ -83,6 +82,20 @@ export default function NuevaTransaccion() {
         <View style={[styles.card, { marginTop: 24 }]}>
           <Text style={styles.title}>➕ Nueva transacción</Text>
 
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginBottom: 16,
+              marginTop: 4,
+            }}
+          >
+            <Text style={[styles.label, { marginRight: 12 }]}>
+              ¿Es una deuda?
+            </Text>
+            <Switch value={esDeuda} onValueChange={setEsDeuda} />
+          </View>
+
           <Text style={styles.label}>Descripción</Text>
           <TextInput
             style={styles.input}
@@ -102,47 +115,41 @@ export default function NuevaTransaccion() {
             placeholderTextColor={theme.inputBorder}
           />
 
-          <Text style={styles.label}>¿De qué total?</Text>
-          <View style={[styles.input, { padding: 0, marginBottom: 16 }]}>
-            <Picker
-              selectedValue={totalId}
-              onValueChange={setTotalId}
-              style={{ color: theme.text, backgroundColor: "transparent" }}
-              dropdownIconColor={theme.text}
-            >
-              {totales.map((t) => (
-                <Picker.Item key={t.id} label={t.label} value={t.id} />
-              ))}
-            </Picker>
-          </View>
+          {!esDeuda && (
+            <>
+              <Text style={styles.label}>¿De qué total?</Text>
+              <View style={[styles.input, { padding: 0, marginBottom: 16 }]}>
+                <Picker
+                  selectedValue={totalId}
+                  onValueChange={setTotalId}
+                  style={{ color: theme.text, backgroundColor: "transparent" }}
+                  dropdownIconColor={theme.text}
+                >
+                  {totales.map((t) => (
+                    <Picker.Item key={t.id} label={t.label} value={t.id} />
+                  ))}
+                </Picker>
+              </View>
 
-          <Text style={styles.label}>¿Desde qué billetera?</Text>
-          <View style={[styles.input, { padding: 0, marginBottom: 16 }]}>
-            <Picker
-              selectedValue={origen}
-              onValueChange={setOrigen}
-              style={{ color: theme.text, backgroundColor: "transparent" }}
-              dropdownIconColor={theme.text}
-            >
-              {billeteras.map((b) => (
-                <Picker.Item key={b.value} label={b.label} value={b.value} />
-              ))}
-            </Picker>
-          </View>
-
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginBottom: 16,
-              marginTop: 4,
-            }}
-          >
-            <Text style={[styles.label, { marginRight: 12 }]}>
-              ¿Es una deuda?
-            </Text>
-            <Switch value={esDeuda} onValueChange={setEsDeuda} />
-          </View>
+              <Text style={styles.label}>¿Desde qué billetera?</Text>
+              <View style={[styles.input, { padding: 0, marginBottom: 16 }]}>
+                <Picker
+                  selectedValue={origen}
+                  onValueChange={setOrigen}
+                  style={{ color: theme.text, backgroundColor: "transparent" }}
+                  dropdownIconColor={theme.text}
+                >
+                  {billeteras.map((b) => (
+                    <Picker.Item
+                      key={b.value}
+                      label={b.label}
+                      value={b.value}
+                    />
+                  ))}
+                </Picker>
+              </View>
+            </>
+          )}
 
           <Pressable style={styles.button} onPress={guardarTransaccion}>
             <Text style={styles.buttonText}>Guardar</Text>

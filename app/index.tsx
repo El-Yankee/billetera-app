@@ -191,7 +191,7 @@ export default function HomeScreen() {
         {deudas.map((d, i) => (
           <View key={i} style={styles.card}>
             <Text style={styles.cardText}>
-              {d.descripcion} - ${d.monto} ({d.persona}, {d.origen})
+              {d.descripcion} - ${d.monto}
             </Text>
             <Pressable
               onPress={() => eliminarDeuda(i)}
@@ -212,43 +212,61 @@ export default function HomeScreen() {
       {/* Transacciones realizadas */}
       <View style={styles.section}>
         <Text style={styles.subtitle}>Transacciones realizadas:</Text>
-        {transacciones.map((t, i) => (
-          <View key={i} style={styles.card}>
-            <Text style={styles.cardText}>
-              {t.descripcion} - ${t.monto} ({t.persona}, {t.origen})
-            </Text>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                marginTop: 8,
-              }}
-            >
-              <Pressable
-                onPress={() => alert("✅ Aceptado")}
+        {transacciones.map((t, i) => {
+          const totalLabel =
+            totales.find((total) => total.id === t.totalId)?.label ??
+            "Sin total";
+          return (
+            <View key={i} style={styles.card}>
+              <Text style={styles.cardText}>
+                {t.descripcion} - ${t.monto} ({totales[t.totalId - 1]?.label},{" "}
+                {t.origen})
+              </Text>
+              <View
                 style={{
-                  backgroundColor: "#4CAF50",
-                  padding: 6,
-                  borderRadius: 6,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  marginTop: 8,
                 }}
               >
-                <Text style={{ color: "#fff" }}>Aceptar</Text>
-              </Pressable>
-              <Pressable
-                onPress={() =>
-                  alert("✏️ Función de edición aún no implementada")
-                }
-                style={{
-                  backgroundColor: "#2196F3",
-                  padding: 6,
-                  borderRadius: 6,
-                }}
-              >
-                <Text style={{ color: "#fff" }}>Editar</Text>
-              </Pressable>
+                <Pressable
+                  onPress={() => alert("✅ Aceptado")}
+                  style={{
+                    backgroundColor: "#4CAF50",
+                    padding: 6,
+                    borderRadius: 6,
+                  }}
+                >
+                  <Text style={{ color: "#fff" }}>Aceptar</Text>
+                </Pressable>
+                <Pressable
+                  onPress={() =>
+                    alert("✏️ Función de edición aún no implementada")
+                  }
+                  style={{
+                    backgroundColor: "#2196F3",
+                    padding: 6,
+                    borderRadius: 6,
+                  }}
+                >
+                  <Text style={{ color: "#fff" }}>Editar</Text>
+                </Pressable>
+              </View>
             </View>
-          </View>
-        ))}
+          );
+        })}
+      </View>
+
+      {/* Notas */}
+      <View style={styles.section}>
+        <Text style={styles.subtitle}>Notas:</Text>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Escribe una nota..."
+          placeholderTextColor={theme.placeholderText}
+          multiline
+          numberOfLines={5}
+        />
       </View>
     </ScrollView>
   );
