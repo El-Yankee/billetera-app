@@ -1,12 +1,21 @@
 import { ScrollView, Text, View, TextInput } from "react-native";
+import { useRouter } from "expo-router";
 import { Link } from "expo-router";
 import { useTransacciones } from "../context/TransaccionesContext";
 import { Pressable } from "react-native";
 import { useState } from "react";
 import { useTheme } from "./styles/useTheme";
 import { createStyles } from "./styles/indexStyles";
+import {
+  Ionicons,
+  MaterialCommunityIcons,
+  FontAwesome5,
+} from "@expo/vector-icons";
+import { WalletCard } from "../components/WalletCard";
+import { TotalCard } from "../components/TotalCard";
 
 export default function HomeScreen() {
+  const router = useRouter();
   const theme = useTheme();
   const styles = createStyles(theme);
   // Estados para totales
@@ -37,270 +46,124 @@ export default function HomeScreen() {
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>💰 Resumen de saldos</Text>
 
-      <Link href="/nueva" style={styles.buttonLink}>
-        ➕ Agregar nueva transacción
-      </Link>
+      <Pressable
+        style={styles.buttonLink}
+        onPress={() => router.push("/nueva")}
+      >
+        <Text
+          style={{
+            color: theme.buttonText,
+            textAlign: "center",
+            fontWeight: "bold",
+            fontSize: 18,
+          }}
+        >
+          Agregar nueva transacción
+        </Text>
+      </Pressable>
 
       {/* Totales */}
       <View style={styles.section}>
         <Text style={styles.subtitle}>Totales:</Text>
-        <View style={styles.card}>
-          {editComidaSanti ? (
-            <>
-              <TextInput
-                style={styles.input}
-                value={comidaSanti.toString()}
-                onChangeText={(v) => setComidaSanti(Number(v))}
-                keyboardType="numeric"
-              />
-              <Pressable
-                onPress={() => setEditComidaSanti(false)}
-                style={{ marginLeft: 8 }}
-              >
-                <Text style={{ color: "#4CAF50" }}>Guardar</Text>
-              </Pressable>
-            </>
-          ) : (
-            <>
-              <Text style={styles.cardText}>Comida Santi: ${comidaSanti}</Text>
-              <Pressable
-                onPress={() => setEditComidaSanti(true)}
-                style={{ marginLeft: 8 }}
-              >
-                <Text style={{ color: "#2196F3" }}>Editar</Text>
-              </Pressable>
-            </>
-          )}
-        </View>
-        <View style={styles.card}>
-          {editComidaCami ? (
-            <>
-              <TextInput
-                style={styles.input}
-                value={comidaCami.toString()}
-                onChangeText={(v) => setComidaCami(Number(v))}
-                keyboardType="numeric"
-              />
-              <Pressable
-                onPress={() => setEditComidaCami(false)}
-                style={{ marginLeft: 8 }}
-              >
-                <Text style={{ color: "#4CAF50" }}>Guardar</Text>
-              </Pressable>
-            </>
-          ) : (
-            <>
-              <Text style={styles.cardText}>Comida Cami: ${comidaCami}</Text>
-              <Pressable
-                onPress={() => setEditComidaCami(true)}
-                style={{ marginLeft: 8 }}
-              >
-                <Text style={{ color: "#2196F3" }}>Editar</Text>
-              </Pressable>
-            </>
-          )}
-        </View>
-        <View style={styles.card}>
-          {editExtras ? (
-            <>
-              <TextInput
-                style={styles.input}
-                value={extras.toString()}
-                onChangeText={(v) => setExtras(Number(v))}
-                keyboardType="numeric"
-              />
-              <Pressable
-                onPress={() => setEditExtras(false)}
-                style={{ marginLeft: 8 }}
-              >
-                <Text style={{ color: "#4CAF50" }}>Guardar</Text>
-              </Pressable>
-            </>
-          ) : (
-            <>
-              <Text style={styles.cardText}>Extras: ${extras}</Text>
-              <Pressable
-                onPress={() => setEditExtras(true)}
-                style={{ marginLeft: 8 }}
-              >
-                <Text style={{ color: "#2196F3" }}>Editar</Text>
-              </Pressable>
-            </>
-          )}
-        </View>
-        <View style={styles.card}>
-          {editDolares ? (
-            <>
-              <TextInput
-                style={styles.input}
-                value={dolares.toString()}
-                onChangeText={(v) => setDolares(Number(v))}
-                keyboardType="numeric"
-              />
-              <Pressable
-                onPress={() => setEditDolares(false)}
-                style={{ marginLeft: 8 }}
-              >
-                <Text style={{ color: "#4CAF50" }}>Guardar</Text>
-              </Pressable>
-            </>
-          ) : (
-            <>
-              <Text style={styles.cardText}>Dólares: ${dolares}</Text>
-              <Pressable
-                onPress={() => setEditDolares(true)}
-                style={{ marginLeft: 8 }}
-              >
-                <Text style={{ color: "#2196F3" }}>Editar</Text>
-              </Pressable>
-            </>
-          )}
-        </View>
+        <TotalCard
+          label="Comida Santi"
+          value={comidaSanti}
+          onChange={setComidaSanti}
+          styles={styles}
+        />
+        <TotalCard
+          label="Comida Cami"
+          value={comidaCami}
+          onChange={setComidaCami}
+          styles={styles}
+        />
+        <TotalCard
+          label="Extras"
+          value={extras}
+          onChange={setExtras}
+          styles={styles}
+        />
+        <TotalCard
+          label="Dólares"
+          value={dolares}
+          onChange={setDolares}
+          styles={styles}
+        />
       </View>
 
       {/* Billeteras */}
       <View style={styles.section}>
         <Text style={styles.subtitle}>Billeteras:</Text>
-        <View style={styles.card}>
-          {editEfectivo ? (
-            <>
-              <TextInput
-                style={styles.input}
-                value={efectivo.toString()}
-                onChangeText={(v) => setEfectivo(Number(v))}
-                keyboardType="numeric"
-              />
-              <Pressable
-                onPress={() => setEditEfectivo(false)}
-                style={{ marginLeft: 8 }}
-              >
-                <Text style={{ color: "#4CAF50" }}>Guardar</Text>
-              </Pressable>
-            </>
-          ) : (
-            <>
-              <Text style={styles.cardText}>Efectivo: ${efectivo}</Text>
-              <Pressable
-                onPress={() => setEditEfectivo(true)}
-                style={{ marginLeft: 8 }}
-              >
-                <Text style={{ color: "#2196F3" }}>Editar</Text>
-              </Pressable>
-            </>
-          )}
-        </View>
-        <View style={styles.card}>
-          {editMp ? (
-            <>
-              <TextInput
-                style={styles.input}
-                value={mp.toString()}
-                onChangeText={(v) => setMp(Number(v))}
-                keyboardType="numeric"
-              />
-              <Pressable
-                onPress={() => setEditMp(false)}
-                style={{ marginLeft: 8 }}
-              >
-                <Text style={{ color: "#4CAF50" }}>Guardar</Text>
-              </Pressable>
-            </>
-          ) : (
-            <>
-              <Text style={styles.cardText}>Mercado Pago: ${mp}</Text>
-              <Pressable
-                onPress={() => setEditMp(true)}
-                style={{ marginLeft: 8 }}
-              >
-                <Text style={{ color: "#2196F3" }}>Editar</Text>
-              </Pressable>
-            </>
-          )}
-        </View>
-        <View style={styles.card}>
-          {editPersonalPay ? (
-            <>
-              <TextInput
-                style={styles.input}
-                value={personalPay.toString()}
-                onChangeText={(v) => setPersonalPay(Number(v))}
-                keyboardType="numeric"
-              />
-              <Pressable
-                onPress={() => setEditPersonalPay(false)}
-                style={{ marginLeft: 8 }}
-              >
-                <Text style={{ color: "#4CAF50" }}>Guardar</Text>
-              </Pressable>
-            </>
-          ) : (
-            <>
-              <Text style={styles.cardText}>Personal Pay: ${personalPay}</Text>
-              <Pressable
-                onPress={() => setEditPersonalPay(true)}
-                style={{ marginLeft: 8 }}
-              >
-                <Text style={{ color: "#2196F3" }}>Editar</Text>
-              </Pressable>
-            </>
-          )}
-        </View>
-        <View style={styles.card}>
-          {editUala ? (
-            <>
-              <TextInput
-                style={styles.input}
-                value={uala.toString()}
-                onChangeText={(v) => setUala(Number(v))}
-                keyboardType="numeric"
-              />
-              <Pressable
-                onPress={() => setEditUala(false)}
-                style={{ marginLeft: 8 }}
-              >
-                <Text style={{ color: "#4CAF50" }}>Guardar</Text>
-              </Pressable>
-            </>
-          ) : (
-            <>
-              <Text style={styles.cardText}>Ualá: ${uala}</Text>
-              <Pressable
-                onPress={() => setEditUala(true)}
-                style={{ marginLeft: 8 }}
-              >
-                <Text style={{ color: "#2196F3" }}>Editar</Text>
-              </Pressable>
-            </>
-          )}
-        </View>
-        <View style={styles.card}>
-          {editAstropay ? (
-            <>
-              <TextInput
-                style={styles.input}
-                value={astropay.toString()}
-                onChangeText={(v) => setAstropay(Number(v))}
-                keyboardType="numeric"
-              />
-              <Pressable
-                onPress={() => setEditAstropay(false)}
-                style={{ marginLeft: 8 }}
-              >
-                <Text style={{ color: "#4CAF50" }}>Guardar</Text>
-              </Pressable>
-            </>
-          ) : (
-            <>
-              <Text style={styles.cardText}>Astropay: ${astropay}</Text>
-              <Pressable
-                onPress={() => setEditAstropay(true)}
-                style={{ marginLeft: 8 }}
-              >
-                <Text style={{ color: "#2196F3" }}>Editar</Text>
-              </Pressable>
-            </>
-          )}
-        </View>
+        <WalletCard
+          icon={
+            <FontAwesome5
+              name="money-bill-wave"
+              size={22}
+              color="#4caf50"
+              style={{ marginRight: 10 }}
+            />
+          }
+          label="Efectivo"
+          value={efectivo}
+          onChange={setEfectivo}
+          styles={styles}
+        />
+        <WalletCard
+          icon={
+            <MaterialCommunityIcons
+              name="credit-card"
+              size={22}
+              color="#1976d2"
+              style={{ marginRight: 10 }}
+            />
+          }
+          label="Mercado Pago"
+          value={mp}
+          onChange={setMp}
+          styles={styles}
+        />
+        <WalletCard
+          icon={
+            <MaterialCommunityIcons
+              name="cellphone"
+              size={22}
+              color="#ff9800"
+              style={{ marginRight: 10 }}
+            />
+          }
+          label="Personal Pay"
+          value={personalPay}
+          onChange={setPersonalPay}
+          styles={styles}
+        />
+        <WalletCard
+          icon={
+            <MaterialCommunityIcons
+              name="credit-card-outline"
+              size={22}
+              color="#512da8"
+              style={{ marginRight: 10 }}
+            />
+          }
+          label="Ualá"
+          value={uala}
+          onChange={setUala}
+          styles={styles}
+        />
+        <WalletCard
+          icon={
+            <MaterialCommunityIcons
+              name="star-four-points"
+              size={22}
+              color="#e040fb"
+              style={{ marginRight: 10 }}
+            />
+          }
+          label="Astropay"
+          value={astropay}
+          onChange={setAstropay}
+          styles={styles}
+        />
       </View>
 
       {/* Plata que me deben */}

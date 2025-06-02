@@ -1,30 +1,17 @@
-import { Tabs } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
+import { Stack } from "expo-router";
 import { TransaccionesProvider } from "../context/TransaccionesContext";
 
 export default function Layout() {
   return (
     <TransaccionesProvider>
-      <Tabs
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ color, size }) => {
-            let iconName = "";
-
-            if (route.name === "index") iconName = "home";
-            else if (route.name === "nueva") iconName = "add-circle";
-
-            return (
-              <Ionicons name={iconName as any} size={size} color={color} />
-            );
-          },
-          tabBarActiveTintColor: "#007AFF",
-          tabBarInactiveTintColor: "gray",
-          headerShown: false,
-        })}
+      <Stack
+        screenOptions={{
+          headerShown: false, // Oculto por defecto
+          animation: "slide_from_right", // Animación moderna y fluida
+        }}
       >
-        <Tabs.Screen name="index" options={{ title: "Inicio" }} />
-        <Tabs.Screen name="nueva" options={{ title: "Nueva" }} />
-      </Tabs>
+        {/* Puedes definir opciones específicas por pantalla aquí si quieres */}
+      </Stack>
     </TransaccionesProvider>
   );
 }
