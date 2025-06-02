@@ -16,6 +16,7 @@ import { createTransaccionesStyles } from "./styles/transaccionesStyles";
 import { Picker } from "@react-native-picker/picker";
 import { Pressable } from "react-native";
 import { useHomeTotales } from "../context/TotalesContext";
+import { useBilleteras } from "../context/BilleterasContext";
 
 const billeteras = [
   { label: "Efectivo", value: "efectivo" },
@@ -32,11 +33,12 @@ export default function NuevaTransaccion() {
 
   const [descripcion, setDescripcion] = useState("");
   const [monto, setMonto] = useState("");
-  const [origen, setOrigen] = useState("mp");
   const [esDeuda, setEsDeuda] = useState(false);
   const { agregar, agregarDeuda } = useTransacciones();
   const { totales } = useHomeTotales(); // O trae los totales como corresponda
   const [totalId, setTotalId] = useState(totales[0]?.id ?? "");
+  const { billeteras } = useBilleteras();
+  const [origen, setOrigen] = useState(billeteras[0]?.label ?? "");
 
   const guardarTransaccion = () => {
     if (!descripcion || !monto) {
@@ -140,11 +142,7 @@ export default function NuevaTransaccion() {
                   dropdownIconColor={theme.text}
                 >
                   {billeteras.map((b) => (
-                    <Picker.Item
-                      key={b.value}
-                      label={b.label}
-                      value={b.value}
-                    />
+                    <Picker.Item key={b.id} label={b.label} value={b.label} />
                   ))}
                 </Picker>
               </View>

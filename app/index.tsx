@@ -13,88 +13,15 @@ import {
 import { WalletCard } from "../components/WalletCard";
 import { TotalCard } from "../components/TotalCard";
 import { useHomeTotales } from "../context/TotalesContext";
+import { useBilleteras } from "../context/BilleterasContext";
 
 export default function HomeScreen() {
   const router = useRouter();
   const theme = useTheme();
   const styles = createHomeStyles(theme);
   const { totales, setTotales } = useHomeTotales();
+  const { billeteras, setBilleteras } = useBilleteras();
   const { transacciones, deudas, eliminarDeuda } = useTransacciones();
-
-  // Estados para billeteras
-  const [efectivo, setEfectivo] = useState(0);
-  const [mp, setMp] = useState(0);
-  const [personalPay, setPersonalPay] = useState(0);
-  const [uala, setUala] = useState(0);
-  const [astropay, setAstropay] = useState(0);
-
-  const [billeteras, setBilleteras] = useState([
-    {
-      id: 1,
-      label: "Efectivo",
-      value: 0,
-      icon: (
-        <FontAwesome5
-          name="money-bill-wave"
-          size={22}
-          color="#4caf50"
-          style={{ marginRight: 10 }}
-        />
-      ),
-    },
-    {
-      id: 2,
-      label: "Mercado Pago",
-      value: 0,
-      icon: (
-        <MaterialCommunityIcons
-          name="credit-card"
-          size={22}
-          color="#1976d2"
-          style={{ marginRight: 10 }}
-        />
-      ),
-    },
-    {
-      id: 3,
-      label: "Personal Pay",
-      value: 0,
-      icon: (
-        <MaterialCommunityIcons
-          name="cellphone"
-          size={22}
-          color="#ff9800"
-          style={{ marginRight: 10 }}
-        />
-      ),
-    },
-    {
-      id: 4,
-      label: "Ualá",
-      value: 0,
-      icon: (
-        <MaterialCommunityIcons
-          name="credit-card-outline"
-          size={22}
-          color="#512da8"
-          style={{ marginRight: 10 }}
-        />
-      ),
-    },
-    {
-      id: 5,
-      label: "Astropay",
-      value: 0,
-      icon: (
-        <MaterialCommunityIcons
-          name="star-four-points"
-          size={22}
-          color="#e040fb"
-          style={{ marginRight: 10 }}
-        />
-      ),
-    },
-  ]);
 
   return (
     <ScrollView
@@ -203,14 +130,6 @@ export default function HomeScreen() {
                   id: Date.now(),
                   label: "Nueva billetera",
                   value: 0,
-                  icon: (
-                    <MaterialCommunityIcons
-                      name="wallet"
-                      size={22}
-                      color="#888"
-                      style={{ marginRight: 10 }}
-                    />
-                  ),
                 },
               ])
             }
