@@ -1,4 +1,5 @@
-import { StyleSheet } from "react-native";
+import { template } from "@babel/core";
+import { StyleSheet, TextInput } from "react-native";
 
 export const createHomeStyles = (theme: any) =>
   StyleSheet.create({
@@ -101,5 +102,14 @@ export const createHomeStyles = (theme: any) =>
       textAlign: "center",
       marginBottom: 18,
       color: theme.text,
+    },
+    TextInput: {
+      backgroundColor: theme.inputBg,
+      color: theme.text,
+      borderRadius: 8,
+      padding: 12,
+      fontSize: 16,
+      elevation: 1,
+      minHeight: 44,
     },
   });

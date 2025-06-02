@@ -1,4 +1,11 @@
-import { ScrollView, Text, View, TextInput } from "react-native";
+import {
+  ScrollView,
+  Text,
+  View,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { useRouter } from "expo-router";
 import { useTransacciones } from "../context/TransaccionesContext";
 import { Pressable } from "react-native";
@@ -26,7 +33,10 @@ export default function HomeScreen() {
   return (
     <ScrollView
       style={{ backgroundColor: theme.background, flex: 1 }}
-      contentContainerStyle={styles.container}
+      contentContainerStyle={[
+        styles.container,
+        { paddingBottom: 32 }, // Ajusta el valor según necesites
+      ]}
     >
       <Text style={styles.title}>💰 Resumen de saldos</Text>
 
@@ -211,7 +221,6 @@ export default function HomeScreen() {
             // (Opcional) Eliminar la transacción aceptada:
             // Eliminar la transacción aceptada
             eliminarTransaccion(i);
-            alert("✅ Transacción aceptada y descontada");
           };
 
           return (
@@ -258,9 +267,12 @@ export default function HomeScreen() {
       <View style={styles.section}>
         <Text style={styles.subtitle}>Notas:</Text>
         <TextInput
-          style={styles.textInput}
+          style={[
+            styles.textInput,
+            { color: theme.text, backgroundColor: "transparent" },
+          ]}
           placeholder="Escribe una nota..."
-          placeholderTextColor={theme.placeholderText}
+          placeholderTextColor={theme.text}
           multiline
           numberOfLines={5}
         />

@@ -47,10 +47,8 @@ export default function NuevaTransaccion() {
 
     if (esDeuda) {
       agregarDeuda(nueva);
-      Alert.alert("Guardado", "Deuda agregada correctamente");
     } else {
       agregar(nueva);
-      Alert.alert("Guardado", "Transacción agregada correctamente");
     }
 
     setDescripcion("");
