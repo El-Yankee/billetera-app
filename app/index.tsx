@@ -19,6 +19,7 @@ export default function HomeScreen() {
   const theme = useTheme();
   const styles = createHomeStyles(theme);
   const { totales, setTotales } = useHomeTotales();
+  const { transacciones, deudas, eliminarDeuda } = useTransacciones();
 
   // Estados para billeteras
   const [efectivo, setEfectivo] = useState(0);
@@ -27,7 +28,73 @@ export default function HomeScreen() {
   const [uala, setUala] = useState(0);
   const [astropay, setAstropay] = useState(0);
 
-  const { transacciones, deudas, eliminarDeuda } = useTransacciones();
+  const [billeteras, setBilleteras] = useState([
+    {
+      id: 1,
+      label: "Efectivo",
+      value: 0,
+      icon: (
+        <FontAwesome5
+          name="money-bill-wave"
+          size={22}
+          color="#4caf50"
+          style={{ marginRight: 10 }}
+        />
+      ),
+    },
+    {
+      id: 2,
+      label: "Mercado Pago",
+      value: 0,
+      icon: (
+        <MaterialCommunityIcons
+          name="credit-card"
+          size={22}
+          color="#1976d2"
+          style={{ marginRight: 10 }}
+        />
+      ),
+    },
+    {
+      id: 3,
+      label: "Personal Pay",
+      value: 0,
+      icon: (
+        <MaterialCommunityIcons
+          name="cellphone"
+          size={22}
+          color="#ff9800"
+          style={{ marginRight: 10 }}
+        />
+      ),
+    },
+    {
+      id: 4,
+      label: "Ualá",
+      value: 0,
+      icon: (
+        <MaterialCommunityIcons
+          name="credit-card-outline"
+          size={22}
+          color="#512da8"
+          style={{ marginRight: 10 }}
+        />
+      ),
+    },
+    {
+      id: 5,
+      label: "Astropay",
+      value: 0,
+      icon: (
+        <MaterialCommunityIcons
+          name="star-four-points"
+          size={22}
+          color="#e040fb"
+          style={{ marginRight: 10 }}
+        />
+      ),
+    },
+  ]);
 
   return (
     <ScrollView
@@ -112,77 +179,66 @@ export default function HomeScreen() {
 
       {/* Billeteras */}
       <View style={styles.section}>
-        <Text style={styles.subtitle}>Billeteras:</Text>
-        <WalletCard
-          icon={
-            <FontAwesome5
-              name="money-bill-wave"
-              size={22}
-              color="#4caf50"
-              style={{ marginRight: 10 }}
-            />
-          }
-          label="Efectivo"
-          value={efectivo}
-          onChange={setEfectivo}
-          styles={styles}
-        />
-        <WalletCard
-          icon={
-            <MaterialCommunityIcons
-              name="credit-card"
-              size={22}
-              color="#1976d2"
-              style={{ marginRight: 10 }}
-            />
-          }
-          label="Mercado Pago"
-          value={mp}
-          onChange={setMp}
-          styles={styles}
-        />
-        <WalletCard
-          icon={
-            <MaterialCommunityIcons
-              name="cellphone"
-              size={22}
-              color="#ff9800"
-              style={{ marginRight: 10 }}
-            />
-          }
-          label="Personal Pay"
-          value={personalPay}
-          onChange={setPersonalPay}
-          styles={styles}
-        />
-        <WalletCard
-          icon={
-            <MaterialCommunityIcons
-              name="credit-card-outline"
-              size={22}
-              color="#512da8"
-              style={{ marginRight: 10 }}
-            />
-          }
-          label="Ualá"
-          value={uala}
-          onChange={setUala}
-          styles={styles}
-        />
-        <WalletCard
-          icon={
-            <MaterialCommunityIcons
-              name="star-four-points"
-              size={22}
-              color="#e040fb"
-              style={{ marginRight: 10 }}
-            />
-          }
-          label="Astropay"
-          value={astropay}
-          onChange={setAstropay}
-          styles={styles}
-        />
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginBottom: 8,
+            justifyContent: "space-between",
+            paddingHorizontal: 12,
+            paddingVertical: 8,
+            borderRadius: 12,
+          }}
+        >
+          <Text style={styles.subtitle}>Billeteras:</Text>
+          <Pressable
+            style={[
+              styles.button,
+              { marginLeft: 12, paddingVertical: 4, paddingHorizontal: 10 },
+            ]}
+            onPress={() =>
+              setBilleteras((prev) => [
+                ...prev,
+                {
+                  id: Date.now(),
+                  label: "Nueva billetera",
+                  value: 0,
+                  icon: (
+                    <MaterialCommunityIcons
+                      name="wallet"
+                      size={22}
+                      color="#888"
+                      style={{ marginRight: 10 }}
+                    />
+                  ),
+                },
+              ])
+            }
+          >
+            <Text style={styles.buttonText}>+ Agregar billetera</Text>
+          </Pressable>
+        </View>
+        {billeteras.map((b) => (
+          <WalletCard
+            key={b.id}
+            label={b.label}
+            value={b.value}
+            onChange={(v) =>
+              setBilleteras((prev) =>
+                prev.map((w) => (w.id === b.id ? { ...w, value: v } : w))
+              )
+            }
+            styles={styles}
+            onDelete={() =>
+              setBilleteras((prev) => prev.filter((w) => w.id !== b.id))
+            }
+            onEditLabel={(newLabel) =>
+              setBilleteras((prev) =>
+                prev.map((w) => (w.id === b.id ? { ...w, label: newLabel } : w))
+              )
+            }
+          />
+        ))}
       </View>
 
       {/* Plata que me deben */}

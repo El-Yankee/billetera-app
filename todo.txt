@@ -4,7 +4,7 @@
 - [x] Permitir agregar, editar y eliminar Totales (Comida Santi, Comida Cami, Extras, Dólares)
 - [ ] Permitir agregar, editar y eliminar Billeteras (Efectivo, Mercado Pago, Personal Pay, Ualá, Astropay)
 - [ ] Guardar los Totales y Billeteras en almacenamiento persistente (AsyncStorage)
-- [ ] Al crear una nueva transacción, poder elegir de qué Total y Billetera sale el dinero
+- [x] Al crear una nueva transacción, poder elegir de qué Total y Billetera sale el dinero
 - [ ] Editar y eliminar transacciones realizadas
 - [ ] Editar y eliminar deudas
 
