@@ -18,14 +18,6 @@ import { Pressable } from "react-native";
 import { useHomeTotales } from "../context/TotalesContext";
 import { useBilleteras } from "../context/BilleterasContext";
 
-const billeteras = [
-  { label: "Efectivo", value: "efectivo" },
-  { label: "Mercado Pago", value: "mp" },
-  { label: "Personal Pay", value: "personalpay" },
-  { label: "Ualá", value: "uala" },
-  { label: "Astropay", value: "astropay" },
-];
-
 export default function NuevaTransaccion() {
   const router = useRouter();
   const theme = useTheme();
@@ -36,7 +28,7 @@ export default function NuevaTransaccion() {
   const [esDeuda, setEsDeuda] = useState(false);
   const { agregar, agregarDeuda } = useTransacciones();
   const { totales } = useHomeTotales(); // O trae los totales como corresponda
-  const [totalId, setTotalId] = useState(totales[0]?.id ?? "");
+  const [total, setTotal] = useState(totales[0]?.id ?? 0); // <-- número, no string
   const { billeteras } = useBilleteras();
   const [origen, setOrigen] = useState(billeteras[0]?.label ?? "");
 
@@ -49,7 +41,7 @@ export default function NuevaTransaccion() {
     const nueva = {
       descripcion,
       monto: parseFloat(monto),
-      totalId, // <-- Usar el id del total seleccionado
+      totalId: total, // <-- usa total como id
       origen,
     };
 
@@ -122,8 +114,8 @@ export default function NuevaTransaccion() {
               <Text style={styles.label}>¿De qué total?</Text>
               <View style={[styles.input, { padding: 0, marginBottom: 16 }]}>
                 <Picker
-                  selectedValue={totalId}
-                  onValueChange={setTotalId}
+                  selectedValue={total}
+                  onValueChange={(value) => setTotal(Number(value))}
                   style={{ color: theme.text, backgroundColor: "transparent" }}
                   dropdownIconColor={theme.text}
                 >

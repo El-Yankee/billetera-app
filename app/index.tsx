@@ -21,8 +21,8 @@ export default function HomeScreen() {
   const styles = createHomeStyles(theme);
   const { totales, setTotales } = useHomeTotales();
   const { billeteras, setBilleteras } = useBilleteras();
-  const { transacciones, deudas, eliminarDeuda } = useTransacciones();
-
+  const { transacciones, deudas, eliminarDeuda, eliminarTransaccion } =
+    useTransacciones();
   return (
     <ScrollView
       style={{ backgroundColor: theme.background, flex: 1 }}
@@ -189,13 +189,35 @@ export default function HomeScreen() {
         <Text style={styles.subtitle}>Transacciones realizadas:</Text>
         {transacciones.map((t, i) => {
           const totalLabel =
-            totales.find((total) => total.id === t.totalId)?.label ??
-            "Sin total";
+            totales.find((total) => total.id === t.totalId)?.label ?? "N/A";
+          const billeteraLabel =
+            billeteras.find((b) => b.label === t.origen)?.label ?? t.origen;
+
+          const handleAceptar = () => {
+            // Descontar del total
+            setTotales((prev) =>
+              prev.map((total) =>
+                total.id === t.totalId
+                  ? { ...total, value: total.value - t.monto }
+                  : total
+              )
+            );
+            // Descontar de la billetera
+            setBilleteras((prev) =>
+              prev.map((b) =>
+                b.label === t.origen ? { ...b, value: b.value - t.monto } : b
+              )
+            );
+            // (Opcional) Eliminar la transacción aceptada:
+            // Eliminar la transacción aceptada
+            eliminarTransaccion(i);
+            alert("✅ Transacción aceptada y descontada");
+          };
+
           return (
             <View key={i} style={styles.card}>
               <Text style={styles.cardText}>
-                {t.descripcion} - ${t.monto} ({totales[t.totalId - 1]?.label},{" "}
-                {t.origen})
+                {t.descripcion} - ${t.monto} ({totalLabel}, {billeteraLabel})
               </Text>
               <View
                 style={{
@@ -205,7 +227,7 @@ export default function HomeScreen() {
                 }}
               >
                 <Pressable
-                  onPress={() => alert("✅ Aceptado")}
+                  onPress={handleAceptar}
                   style={{
                     backgroundColor: "#4CAF50",
                     padding: 6,

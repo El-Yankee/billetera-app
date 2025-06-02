@@ -14,16 +14,24 @@ export function TransaccionesProvider({
     setTransacciones((prev) => [transaccion, ...prev]);
   const agregarDeuda = (deuda: any) => setDeudas((prev) => [deuda, ...prev]);
   const eliminarDeuda = (index: number) => {
-    setDeudas((prev) => {
-      const nuevo = prev.filter((_, i) => i !== index);
-      console.log("Eliminando deuda. Nuevo array:", nuevo);
-      return nuevo;
-    });
+    setDeudas((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  // NUEVO: función para eliminar transacción
+  const eliminarTransaccion = (index: number) => {
+    setTransacciones((prev) => prev.filter((_, i) => i !== index));
   };
 
   return (
     <TransaccionesContext.Provider
-      value={{ transacciones, agregar, deudas, agregarDeuda, eliminarDeuda }}
+      value={{
+        transacciones,
+        agregar,
+        deudas,
+        agregarDeuda,
+        eliminarDeuda,
+        eliminarTransaccion, // <-- agrega aquí
+      }}
     >
       {children}
     </TransaccionesContext.Provider>
