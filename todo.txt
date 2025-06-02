@@ -1,0 +1,28 @@
+# TODO - Billetera App
+
+## Funcionalidades principales
+- [x] Permitir agregar, editar y eliminar Totales (Comida Santi, Comida Cami, Extras, Dólares)
+- [ ] Permitir agregar, editar y eliminar Billeteras (Efectivo, Mercado Pago, Personal Pay, Ualá, Astropay)
+- [ ] Guardar los Totales y Billeteras en almacenamiento persistente (AsyncStorage)
+- [ ] Al crear una nueva transacción, poder elegir de qué Total y Billetera sale el dinero
+- [ ] Editar y eliminar transacciones realizadas
+- [ ] Editar y eliminar deudas
+
+## Mejoras de UI/UX
+- [ ] Mejorar el diseño de las cards de Totales y Billeteras
+- [ ] Agregar confirmaciones para eliminar elementos
+- [ ] Agregar feedback visual al guardar/editar/eliminar
+
+## Organización y código
+- [ ] Refactorizar estados de Totales y Billeteras a un contexto global
+- [ ] Separar componentes reutilizables
+- [ ] Documentar componentes y hooks principales
+
+## Extras/Futuro
+- [ ] Agregar autenticación de usuario
+- [ ] Sincronización en la nube
+- [ ] Exportar datos a CSV/Excel
+
+---
+
+Actualiza este archivo a medida que completes tareas o surjan nuevas ideas.

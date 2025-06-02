@@ -1,11 +1,10 @@
 import { ScrollView, Text, View, TextInput } from "react-native";
 import { useRouter } from "expo-router";
-import { Link } from "expo-router";
 import { useTransacciones } from "../context/TransaccionesContext";
 import { Pressable } from "react-native";
 import { useState } from "react";
 import { useTheme } from "./styles/useTheme";
-import { createStyles } from "./styles/indexStyles";
+import { createHomeStyles } from "./styles/homeStyles";
 import {
   Ionicons,
   MaterialCommunityIcons,
@@ -13,37 +12,28 @@ import {
 } from "@expo/vector-icons";
 import { WalletCard } from "../components/WalletCard";
 import { TotalCard } from "../components/TotalCard";
+import { useHomeTotales } from "../context/TotalesContext";
 
 export default function HomeScreen() {
   const router = useRouter();
   const theme = useTheme();
-  const styles = createStyles(theme);
-  // Estados para totales
-  const [comidaSanti, setComidaSanti] = useState(0);
-  const [editComidaSanti, setEditComidaSanti] = useState(false);
-  const [comidaCami, setComidaCami] = useState(0);
-  const [editComidaCami, setEditComidaCami] = useState(false);
-  const [extras, setExtras] = useState(0);
-  const [editExtras, setEditExtras] = useState(false);
-  const [dolares, setDolares] = useState(0);
-  const [editDolares, setEditDolares] = useState(false);
+  const styles = createHomeStyles(theme);
+  const { totales, setTotales } = useHomeTotales();
 
   // Estados para billeteras
   const [efectivo, setEfectivo] = useState(0);
-  const [editEfectivo, setEditEfectivo] = useState(false);
   const [mp, setMp] = useState(0);
-  const [editMp, setEditMp] = useState(false);
   const [personalPay, setPersonalPay] = useState(0);
-  const [editPersonalPay, setEditPersonalPay] = useState(false);
   const [uala, setUala] = useState(0);
-  const [editUala, setEditUala] = useState(false);
   const [astropay, setAstropay] = useState(0);
-  const [editAstropay, setEditAstropay] = useState(false);
 
   const { transacciones, deudas, eliminarDeuda } = useTransacciones();
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      style={{ backgroundColor: theme.background, flex: 1 }}
+      contentContainerStyle={styles.container}
+    >
       <Text style={styles.title}>💰 Resumen de saldos</Text>
 
       <Pressable
@@ -64,31 +54,60 @@ export default function HomeScreen() {
 
       {/* Totales */}
       <View style={styles.section}>
-        <Text style={styles.subtitle}>Totales:</Text>
-        <TotalCard
-          label="Comida Santi"
-          value={comidaSanti}
-          onChange={setComidaSanti}
-          styles={styles}
-        />
-        <TotalCard
-          label="Comida Cami"
-          value={comidaCami}
-          onChange={setComidaCami}
-          styles={styles}
-        />
-        <TotalCard
-          label="Extras"
-          value={extras}
-          onChange={setExtras}
-          styles={styles}
-        />
-        <TotalCard
-          label="Dólares"
-          value={dolares}
-          onChange={setDolares}
-          styles={styles}
-        />
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginBottom: 8,
+            justifyContent: "space-between",
+            paddingHorizontal: 12,
+            paddingVertical: 8,
+            borderRadius: 12,
+          }}
+        >
+          <Text style={styles.subtitle}>Totales:</Text>
+          <Pressable
+            style={[
+              styles.button,
+              { marginLeft: 12, paddingVertical: 4, paddingHorizontal: 10 },
+            ]}
+            onPress={() =>
+              setTotales((prev) => [
+                ...prev,
+                {
+                  id: Date.now(),
+                  label: "Nuevo total",
+                  value: 0,
+                },
+              ])
+            }
+          >
+            <Text style={styles.buttonText}>+ Agregar total</Text>
+          </Pressable>
+        </View>
+        {totales.map((total) => (
+          <TotalCard
+            key={total.id}
+            label={total.label}
+            value={total.value}
+            onChange={(v) =>
+              setTotales((prev) =>
+                prev.map((t) => (t.id === total.id ? { ...t, value: v } : t))
+              )
+            }
+            styles={styles}
+            onDelete={() =>
+              setTotales((prev) => prev.filter((t) => t.id !== total.id))
+            }
+            onEditLabel={(newLabel) =>
+              setTotales((prev) =>
+                prev.map((t) =>
+                  t.id === total.id ? { ...t, label: newLabel } : t
+                )
+              )
+            }
+          />
+        ))}
       </View>
 
       {/* Billeteras */}

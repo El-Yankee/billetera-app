@@ -6,15 +6,31 @@ type TotalCardProps = {
   value: number;
   onChange: (v: number) => void;
   styles: any;
+  onDelete: () => void;
+  onEditLabel: (newLabel: string) => void;
 };
 
-export function TotalCard({ label, value, onChange, styles }: TotalCardProps) {
+export function TotalCard({
+  label,
+  value,
+  onChange,
+  styles,
+  onDelete,
+  onEditLabel,
+}: TotalCardProps) {
   const [editing, setEditing] = useState(false);
+  const [editingLabel, setEditingLabel] = useState(false);
   const [tempValue, setTempValue] = useState(value.toString());
+  const [tempLabel, setTempLabel] = useState(label);
 
   const handleSave = () => {
     onChange(Number(tempValue));
     setEditing(false);
+  };
+
+  const handleSaveLabel = () => {
+    onEditLabel(tempLabel);
+    setEditingLabel(false);
   };
 
   return (
@@ -31,15 +47,42 @@ export function TotalCard({ label, value, onChange, styles }: TotalCardProps) {
             <Text style={{ color: "#4CAF50" }}>Guardar</Text>
           </Pressable>
         </>
-      ) : (
+      ) : editingLabel ? (
         <>
+          <TextInput
+            style={styles.input}
+            value={tempLabel}
+            onChangeText={setTempLabel}
+          />
+          <Pressable onPress={handleSaveLabel} style={{ marginLeft: 8 }}>
+            <Text style={{ color: "#4CAF50" }}>Guardar</Text>
+          </Pressable>
+        </>
+      ) : (
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: 0,
+          }}
+        >
           <Text style={styles.cardText}>
             {label}: ${value}
           </Text>
-          <Pressable onPress={() => setEditing(true)} style={{ marginLeft: 8 }}>
-            <Text style={{ color: "#2196F3" }}>Editar</Text>
+          <Pressable
+            onPress={() => setEditingLabel(true)}
+            style={{ marginRight: 8 }}
+          >
+            <Text style={{ fontSize: 18 }}>✏️</Text>
           </Pressable>
-        </>
+          <Pressable onPress={() => setEditing(true)} style={{ marginLeft: 8 }}>
+            <Text style={{ fontSize: 18 }}>📝</Text>
+          </Pressable>
+          <Pressable onPress={onDelete} style={{ marginLeft: 8 }}>
+            <Text style={{ fontSize: 18, color: "red" }}>🗑️</Text>
+          </Pressable>
+        </View>
       )}
     </View>
   );

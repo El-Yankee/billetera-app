@@ -1,11 +1,12 @@
 import { StyleSheet } from "react-native";
 
-export const createStyles = (theme: any) =>
+export const createTransaccionesStyles = (theme: any) =>
   StyleSheet.create({
     container: {
       padding: 20,
       paddingTop: 40,
       backgroundColor: theme.background,
+      minHeight: "100%", // Alternativa si flex: 1 no funciona
     },
 
     section: {
