@@ -35,32 +35,3 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
-
-app-example
-
-# Node
-node_modules/
-npm-debug.log
-yarn-debug.log
-yarn-error.log
-
-# Expo
-.expo/
-.expo-shared/
-
-# macOS
-.DS_Store
-
-# Android Studio
-android/
-*.iml
-.idea/
-
-# VSCode
-.vscode/
-
-# Metro
-*.expo
-
-# Env
-.env

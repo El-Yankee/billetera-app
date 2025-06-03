@@ -7,22 +7,16 @@ import {
   Switch,
   KeyboardAvoidingView,
   Platform,
+  StyleSheet,
 } from "react-native";
 import { useState } from "react";
-import { useTransacciones } from "../context/TransaccionesContext";
-import { useRouter } from "expo-router";
-import { useTheme } from "./styles/useTheme";
-import { createTransaccionesStyles } from "./styles/transaccionesStyles";
+import { useTransacciones } from "../Context/TransaccionesContext";
 import { Picker } from "@react-native-picker/picker";
 import { Pressable } from "react-native";
-import { useHomeTotales } from "../context/TotalesContext";
-import { useBilleteras } from "../context/BilleterasContext";
+import { useHomeTotales } from "../Context/TotalesContext";
+import { useBilleteras } from "../Context/BilleterasContext";
 
-export default function NuevaTransaccion() {
-  const router = useRouter();
-  const theme = useTheme();
-  const styles = createTransaccionesStyles(theme);
-
+export default function DetailsScreen({ navigation }: any) {
   const [descripcion, setDescripcion] = useState("");
   const [monto, setMonto] = useState("");
   const [esDeuda, setEsDeuda] = useState(false);
@@ -55,16 +49,16 @@ export default function NuevaTransaccion() {
     setMonto("");
     setEsDeuda(false);
 
-    router.back();
+    navigation.goBack();
   };
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor: theme.background }}
+      style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <ScrollView
-        style={{ flex: 1, backgroundColor: theme.background }}
+        style={{ flex: 1 }}
         contentContainerStyle={[
           styles.container,
           { flexGrow: 1, justifyContent: "flex-start" },
@@ -94,7 +88,7 @@ export default function NuevaTransaccion() {
             value={descripcion}
             onChangeText={setDescripcion}
             placeholder="Ej: panadería, carga SUBE..."
-            placeholderTextColor={theme.inputBorder}
+            placeholderTextColor={"#aaa"}
           />
 
           <Text style={styles.label}>Monto</Text>
@@ -104,7 +98,7 @@ export default function NuevaTransaccion() {
             onChangeText={setMonto}
             placeholder="Ej: 1200"
             keyboardType="numeric"
-            placeholderTextColor={theme.inputBorder}
+            placeholderTextColor={"#aaa"}
           />
 
           {!esDeuda && (
@@ -113,9 +107,9 @@ export default function NuevaTransaccion() {
               <View style={[styles.input, { padding: 0, marginBottom: 16 }]}>
                 <Picker
                   selectedValue={total}
-                  onValueChange={(value) => setTotal(Number(value))}
-                  style={{ color: theme.text, backgroundColor: "transparent" }}
-                  dropdownIconColor={theme.text}
+                  onValueChange={(value: any) => setTotal(Number(value))}
+                  style={{ color: "#000", backgroundColor: "transparent" }}
+                  dropdownIconColor={"#000"}
                 >
                   {totales.map((t) => (
                     <Picker.Item key={t.id} label={t.label} value={t.id} />
@@ -128,8 +122,8 @@ export default function NuevaTransaccion() {
                 <Picker
                   selectedValue={origen}
                   onValueChange={setOrigen}
-                  style={{ color: theme.text, backgroundColor: "transparent" }}
-                  dropdownIconColor={theme.text}
+                  style={{ backgroundColor: "transparent" }}
+                  dropdownIconColor={"#000"}
                 >
                   {billeteras.map((b) => (
                     <Picker.Item key={b.id} label={b.label} value={b.label} />
@@ -147,3 +141,52 @@ export default function NuevaTransaccion() {
     </KeyboardAvoidingView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: "#fff",
+  },
+  card: {
+    backgroundColor: "#f9f9f9",
+    borderRadius: 8,
+    padding: 16,
+    marginBottom: 16,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 16,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 8,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 4,
+    padding: 12,
+    marginBottom: 16,
+  },
+  button: {
+    backgroundColor: "#4CAF50",
+    padding: 12,
+    borderRadius: 4,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+});

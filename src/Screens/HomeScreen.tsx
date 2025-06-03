@@ -1,60 +1,43 @@
+import React from "react";
 import {
   ScrollView,
   Text,
   View,
   TextInput,
-  KeyboardAvoidingView,
-  Platform,
+  StyleSheet,
+  TouchableOpacity,
 } from "react-native";
-import { useRouter } from "expo-router";
-import { useTransacciones } from "../context/TransaccionesContext";
-import { Pressable } from "react-native";
-import { useState } from "react";
-import { useTheme } from "./styles/useTheme";
-import { createHomeStyles } from "./styles/homeStyles";
-import {
-  Ionicons,
-  MaterialCommunityIcons,
-  FontAwesome5,
-} from "@expo/vector-icons";
-import { WalletCard } from "../components/WalletCard";
-import { TotalCard } from "../components/TotalCard";
-import { useHomeTotales } from "../context/TotalesContext";
-import { useBilleteras } from "../context/BilleterasContext";
+import { WalletCard } from "../Components/WalletCard";
+import { TotalCard } from "../Components/TotalCard";
+import { useHomeTotales } from "../Context/TotalesContext";
+import { useBilleteras } from "../Context/BilleterasContext";
+import { useTransacciones } from "../Context/TransaccionesContext";
+import { Colors } from "../Utils/Colors";
 
-export default function HomeScreen() {
-  const router = useRouter();
-  const theme = useTheme();
-  const styles = createHomeStyles(theme);
+export default function HomeScreen({ navigation }: any) {
   const { totales, setTotales } = useHomeTotales();
   const { billeteras, setBilleteras } = useBilleteras();
   const { transacciones, deudas, eliminarDeuda, eliminarTransaccion } =
     useTransacciones();
   return (
-    <ScrollView
-      style={{ backgroundColor: theme.background, flex: 1 }}
-      contentContainerStyle={[
-        styles.container,
-        { paddingBottom: 32 }, // Ajusta el valor según necesites
-      ]}
-    >
+    <ScrollView style={styles.container}>
       <Text style={styles.title}>💰 Resumen de saldos</Text>
 
-      <Pressable
-        style={styles.buttonLink}
-        onPress={() => router.push("/nueva")}
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate("Details")}
       >
         <Text
           style={{
-            color: theme.buttonText,
             textAlign: "center",
             fontWeight: "bold",
             fontSize: 18,
+            color: Colors.buttonText,
           }}
         >
           Agregar nueva transacción
         </Text>
-      </Pressable>
+      </TouchableOpacity>
 
       {/* Totales */}
       <View style={styles.section}>
@@ -70,7 +53,7 @@ export default function HomeScreen() {
           }}
         >
           <Text style={styles.subtitle}>Totales:</Text>
-          <Pressable
+          <TouchableOpacity
             style={[
               styles.button,
               { marginLeft: 12, paddingVertical: 4, paddingHorizontal: 10 },
@@ -87,7 +70,7 @@ export default function HomeScreen() {
             }
           >
             <Text style={styles.buttonText}>+ Agregar total</Text>
-          </Pressable>
+          </TouchableOpacity>
         </View>
         {totales.map((total) => (
           <TotalCard
@@ -128,7 +111,7 @@ export default function HomeScreen() {
           }}
         >
           <Text style={styles.subtitle}>Billeteras:</Text>
-          <Pressable
+          <TouchableOpacity
             style={[
               styles.button,
               { marginLeft: 12, paddingVertical: 4, paddingHorizontal: 10 },
@@ -145,7 +128,7 @@ export default function HomeScreen() {
             }
           >
             <Text style={styles.buttonText}>+ Agregar billetera</Text>
-          </Pressable>
+          </TouchableOpacity>
         </View>
         {billeteras.map((b) => (
           <WalletCard
@@ -173,12 +156,12 @@ export default function HomeScreen() {
       {/* Plata que me deben */}
       <View style={styles.section}>
         <Text style={styles.subtitle}>Plata que me deben:</Text>
-        {deudas.map((d, i) => (
+        {deudas.map((d: any, i: any) => (
           <View key={i} style={styles.card}>
             <Text style={styles.cardText}>
               {d.descripcion} - ${d.monto}
             </Text>
-            <Pressable
+            <TouchableOpacity
               onPress={() => eliminarDeuda(i)}
               style={{
                 backgroundColor: "#4CAF50",
@@ -189,7 +172,7 @@ export default function HomeScreen() {
               }}
             >
               <Text style={{ color: "#fff" }}>Confirmar devolución</Text>
-            </Pressable>
+            </TouchableOpacity>
           </View>
         ))}
       </View>
@@ -197,7 +180,7 @@ export default function HomeScreen() {
       {/* Transacciones realizadas */}
       <View style={styles.section}>
         <Text style={styles.subtitle}>Transacciones realizadas:</Text>
-        {transacciones.map((t, i) => {
+        {transacciones.map((t: any, i: any) => {
           const totalLabel =
             totales.find((total) => total.id === t.totalId)?.label ?? "N/A";
           const billeteraLabel =
@@ -235,7 +218,7 @@ export default function HomeScreen() {
                   marginTop: 8,
                 }}
               >
-                <Pressable
+                <TouchableOpacity
                   onPress={handleAceptar}
                   style={{
                     backgroundColor: "#4CAF50",
@@ -244,8 +227,8 @@ export default function HomeScreen() {
                   }}
                 >
                   <Text style={{ color: "#fff" }}>Aceptar</Text>
-                </Pressable>
-                <Pressable
+                </TouchableOpacity>
+                <TouchableOpacity
                   onPress={() =>
                     alert("✏️ Función de edición aún no implementada")
                   }
@@ -256,7 +239,7 @@ export default function HomeScreen() {
                   }}
                 >
                   <Text style={{ color: "#fff" }}>Editar</Text>
-                </Pressable>
+                </TouchableOpacity>
               </View>
             </View>
           );
@@ -267,12 +250,9 @@ export default function HomeScreen() {
       <View style={styles.section}>
         <Text style={styles.subtitle}>Notas:</Text>
         <TextInput
-          style={[
-            styles.textInput,
-            { color: theme.text, backgroundColor: "transparent" },
-          ]}
+          style={[styles.textInput, { backgroundColor: "transparent" }]}
           placeholder="Escribe una nota..."
-          placeholderTextColor={theme.text}
+          placeholderTextColor={"#aaa"}
           multiline
           numberOfLines={5}
         />
@@ -280,3 +260,66 @@ export default function HomeScreen() {
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: Colors.background,
+  },
+  section: {
+    marginTop: 16,
+    marginBottom: 16,
+  },
+  subtitle: {
+    color: Colors.subtitle,
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 8,
+  },
+  card: {
+    backgroundColor: Colors.card,
+    padding: 12,
+    borderRadius: 8,
+    elevation: 2,
+    marginBottom: 8,
+  },
+  cardText: {
+    color: Colors.text,
+    fontSize: 16,
+  },
+  textInput: {
+    color: Colors.text,
+    backgroundColor: Colors.inputBg,
+    borderWidth: 1,
+    borderColor: Colors.inputBorder,
+    borderRadius: 8,
+    padding: 12,
+    marginTop: 8,
+  },
+  title: {
+    color: Colors.text,
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 16,
+    textAlign: "center",
+  },
+  buttonLink: {
+    color: Colors.textBlue,
+    backgroundColor: Colors.buttonBg,
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 16,
+  },
+  buttonText: {
+    fontSize: 16,
+    color: Colors.buttonText,
+  },
+  button: {
+    color: Colors.buttonText,
+    backgroundColor: Colors.buttonBg,
+    padding: 8,
+    borderRadius: 8,
+    marginTop: 8,
+  },
+});
