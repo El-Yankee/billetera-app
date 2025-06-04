@@ -1,16 +1,31 @@
-import React from "react";
-import { View, Text, TextInput } from "react-native";
+import React, { useState } from "react";
+import { View, Text, TextInput, Platform } from "react-native";
 
 export function NotasSection({ styles }: any) {
+  const [nota, setNota] = useState("");
+  const [inputHeight, setInputHeight] = useState(80);
+
   return (
     <View style={styles.section}>
       <Text style={styles.subtitle}>Notas:</Text>
       <TextInput
-        style={[styles.textInput, { backgroundColor: "transparent" }]}
+        style={[
+          styles.textInput,
+          {
+            height: Math.max(80, inputHeight),
+          },
+        ]}
         placeholder="Escribe una nota..."
-        placeholderTextColor={"#aaa"}
+        placeholderTextColor="#aaa"
         multiline
-        numberOfLines={5}
+        value={nota}
+        onChangeText={setNota}
+        onContentSizeChange={(e) =>
+          setInputHeight(e.nativeEvent.contentSize.height)
+        }
+        numberOfLines={4}
+        blurOnSubmit={false}
+        returnKeyType={Platform.OS === "ios" ? "default" : "none"}
       />
     </View>
   );

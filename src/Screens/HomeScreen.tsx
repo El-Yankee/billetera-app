@@ -2,28 +2,37 @@ import React from "react";
 import {
   ScrollView,
   Text,
-  View,
-  TextInput,
   StyleSheet,
   TouchableOpacity,
+  KeyboardAvoidingView, // Agrega esto
+  Platform, // Agrega esto
 } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useHomeTotales } from "../Context/TotalesContext";
 import { useBilleteras } from "../Context/BilleterasContext";
 import { useTransacciones } from "../Context/TransaccionesContext";
-import { Colors } from "../Utils/Colors";
 import { TotalesSection } from "../Components/TotalesSection";
 import { BilleterasSection } from "../Components/BilleterasSection";
 import { DeudasSection } from "../Components/DeudasSection";
 import { TransaccionesSection } from "../Components/TransaccionesSection";
 import { NotasSection } from "../Components/NotasSection";
+import { Colors } from "../Utils/Colors";
 
 export default function HomeScreen({ navigation }: any) {
   const { totales, setTotales } = useHomeTotales();
   const { billeteras, setBilleteras } = useBilleteras();
   const { transacciones, deudas, eliminarDeuda, eliminarTransaccion } =
     useTransacciones();
+
   return (
-    <ScrollView style={styles.container}>
+    <KeyboardAwareScrollView
+      style={styles.container}
+      contentContainerStyle={{ flexGrow: 1, justifyContent: "flex-start" }}
+      enableOnAndroid={true}
+      extraScrollHeight={300}
+      extraHeight={300}
+      keyboardShouldPersistTaps="handled"
+    >
       <Text style={styles.title}>Resumen de saldos</Text>
 
       <TouchableOpacity
@@ -76,7 +85,7 @@ export default function HomeScreen({ navigation }: any) {
 
       {/* Notas */}
       <NotasSection styles={styles} />
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 }
 
@@ -115,6 +124,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     marginTop: 8,
+    minHeight: 80,
+    textAlignVertical: "top",
+    marginBottom: 16,
   },
   title: {
     color: Colors.text,
