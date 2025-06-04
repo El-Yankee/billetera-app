@@ -15,6 +15,7 @@ import { Picker } from "@react-native-picker/picker";
 import { Pressable } from "react-native";
 import { useHomeTotales } from "../Context/TotalesContext";
 import { useBilleteras } from "../Context/BilleterasContext";
+import { Colors } from "../Utils/Colors";
 
 export default function DetailsScreen({ navigation }: any) {
   const [descripcion, setDescripcion] = useState("");
@@ -66,7 +67,7 @@ export default function DetailsScreen({ navigation }: any) {
         keyboardShouldPersistTaps="handled"
       >
         <View style={[styles.card, { marginTop: 24 }]}>
-          <Text style={styles.title}>➕ Nueva transacción</Text>
+          <Text style={styles.title}>Nueva transacción</Text>
 
           <View
             style={{
@@ -108,7 +109,7 @@ export default function DetailsScreen({ navigation }: any) {
                 <Picker
                   selectedValue={total}
                   onValueChange={(value: any) => setTotal(Number(value))}
-                  style={{ color: "#000", backgroundColor: "transparent" }}
+                  style={styles.picker}
                   dropdownIconColor={"#000"}
                 >
                   {totales.map((t) => (
@@ -122,7 +123,7 @@ export default function DetailsScreen({ navigation }: any) {
                 <Picker
                   selectedValue={origen}
                   onValueChange={setOrigen}
-                  style={{ backgroundColor: "transparent" }}
+                  style={styles.picker}
                   dropdownIconColor={"#000"}
                 >
                   {billeteras.map((b) => (
@@ -146,47 +147,88 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.background,
   },
-  card: {
-    backgroundColor: "#f9f9f9",
-    borderRadius: 8,
-    padding: 16,
-    marginBottom: 16,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
+  section: {
+    marginTop: 16,
     marginBottom: 16,
   },
-  label: {
-    fontSize: 16,
+  subtitle: {
+    color: Colors.subtitle,
+    fontSize: 18,
     fontWeight: "bold",
     marginBottom: 8,
   },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 4,
+  card: {
+    backgroundColor: Colors.card,
     padding: 12,
+    borderRadius: 8,
+    elevation: 2,
+    marginBottom: 8,
+  },
+  cardText: {
+    color: Colors.text,
+    fontSize: 16,
+  },
+  textInput: {
+    color: Colors.text,
+    backgroundColor: Colors.inputBg,
+    borderWidth: 1,
+    borderColor: Colors.inputBorder,
+    borderRadius: 8,
+    padding: 12,
+    marginTop: 8,
+  },
+  title: {
+    color: Colors.text,
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 16,
+    textAlign: "center",
+  },
+  buttonLink: {
+    color: Colors.textBlue,
+    backgroundColor: Colors.buttonBg,
+    padding: 12,
+    borderRadius: 8,
     marginBottom: 16,
   },
   button: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: Colors.buttonBg,
     padding: 12,
-    borderRadius: 4,
+    borderRadius: 8,
     alignItems: "center",
+    marginTop: 15,
   },
   buttonText: {
-    color: "#fff",
+    color: Colors.buttonText,
     fontWeight: "bold",
+    fontSize: 16,
+  },
+  label: {
+    color: Colors.text,
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 8,
+    marginTop: 12,
+    textAlign: "left",
+    marginLeft: 4,
+  },
+  input: {
+    color: Colors.text,
+    backgroundColor: Colors.inputBg,
+    borderWidth: 1,
+    borderColor: Colors.inputBorder,
+    borderRadius: 8,
+    padding: 12,
+    marginTop: 8,
+  },
+  picker: {
+    color: Colors.text,
+    backgroundColor: Colors.inputBg,
+    borderColor: Colors.inputBorder,
+    borderRadius: 10,
+    padding: 2,
+    height: 50, // Ajusta la altura del Picker
   },
 });
