@@ -31,6 +31,8 @@ export function TransaccionesProvider({
         agregarDeuda,
         eliminarDeuda,
         eliminarTransaccion, // <-- agrega aquí
+        setDeudas, // <-- agrega aquí si necesitas modificar deudas desde otros componentes
+        setTransacciones, // <-- agrega aquí si necesitas modificar transacciones desde otros componentes
       }}
     >
       {children}

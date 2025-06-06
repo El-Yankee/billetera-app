@@ -21,8 +21,14 @@ import { Colors } from "../Utils/Colors";
 export default function HomeScreen({ navigation }: any) {
   const { totales, setTotales } = useHomeTotales();
   const { billeteras, setBilleteras } = useBilleteras();
-  const { transacciones, deudas, eliminarDeuda, eliminarTransaccion } =
-    useTransacciones();
+  const {
+    transacciones,
+    deudas,
+    eliminarDeuda,
+    eliminarTransaccion,
+    setDeudas,
+    setTransacciones,
+  } = useTransacciones();
 
   return (
     <KeyboardAwareScrollView
@@ -70,6 +76,7 @@ export default function HomeScreen({ navigation }: any) {
         deudas={deudas}
         eliminarDeuda={eliminarDeuda}
         styles={styles}
+        setDeudas={setDeudas}
       />
 
       {/* Transacciones realizadas */}
