@@ -15,7 +15,7 @@ import { TotalesSection } from "../Components/TotalesSection";
 import { BilleterasSection } from "../Components/BilleterasSection";
 import { DeudasSection } from "../Components/DeudasSection";
 import { TransaccionesSection } from "../Components/TransaccionesSection";
-import { NotasSection } from "../Components/NotasSection";
+import { NotesSection } from "../Components/NotesSection";
 import { Colors } from "../Utils/Colors";
 
 export default function HomeScreen({ navigation }: any) {
@@ -36,7 +36,6 @@ export default function HomeScreen({ navigation }: any) {
       contentContainerStyle={{ flexGrow: 1, justifyContent: "flex-start" }}
       enableOnAndroid={true}
       extraScrollHeight={300}
-      extraHeight={300}
       keyboardShouldPersistTaps="handled"
     >
       <Text style={styles.title}>Resumen de saldos</Text>
@@ -88,10 +87,11 @@ export default function HomeScreen({ navigation }: any) {
         setBilleteras={setBilleteras}
         eliminarTransaccion={eliminarTransaccion}
         styles={styles}
+        setTransacciones={setTransacciones}
       />
 
       {/* Notas */}
-      <NotasSection styles={styles} />
+      <NotesSection styles={styles} />
     </KeyboardAwareScrollView>
   );
 }
@@ -160,5 +160,31 @@ const styles = StyleSheet.create({
     color: Colors.buttonText,
     fontWeight: "bold",
     fontSize: 16,
+  },
+  label: {
+    color: Colors.text,
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 8,
+    marginTop: 12,
+    textAlign: "left",
+    marginLeft: 4,
+  },
+  input: {
+    color: Colors.text,
+    backgroundColor: Colors.inputBg,
+    borderWidth: 1,
+    borderColor: Colors.inputBorder,
+    borderRadius: 8,
+    padding: 12,
+    marginTop: 8,
+  },
+  picker: {
+    color: Colors.text,
+    backgroundColor: Colors.inputBg,
+    borderColor: Colors.inputBorder,
+    borderRadius: 10,
+    padding: 2,
+    height: 50, // Ajusta la altura del Picker
   },
 });

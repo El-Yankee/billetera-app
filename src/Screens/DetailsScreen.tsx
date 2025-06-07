@@ -110,7 +110,7 @@ export default function DetailsScreen({ navigation }: any) {
                   selectedValue={total}
                   onValueChange={(value: any) => setTotal(Number(value))}
                   style={styles.picker}
-                  dropdownIconColor={"#000"}
+                  dropdownIconColor={styles.textInput.color}
                 >
                   {totales.map((t) => (
                     <Picker.Item key={t.id} label={t.label} value={t.id} />
@@ -124,7 +124,7 @@ export default function DetailsScreen({ navigation }: any) {
                   selectedValue={origen}
                   onValueChange={setOrigen}
                   style={styles.picker}
-                  dropdownIconColor={"#000"}
+                  dropdownIconColor={styles.textInput.color}
                 >
                   {billeteras.map((b) => (
                     <Picker.Item key={b.id} label={b.label} value={b.label} />
@@ -178,6 +178,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     marginTop: 8,
+    minHeight: 80,
+    textAlignVertical: "top",
+    marginBottom: 16,
   },
   title: {
     color: Colors.text,

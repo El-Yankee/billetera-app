@@ -22,6 +22,7 @@ export function TotalCard({
   const [editingLabel, setEditingLabel] = useState(false);
   const [tempValue, setTempValue] = useState(value.toString());
   const [tempLabel, setTempLabel] = useState(label);
+  const [showActions, setShowActions] = useState(false);
 
   const handleSave = () => {
     onChange(Number(tempValue));
@@ -32,8 +33,6 @@ export function TotalCard({
     onEditLabel(tempLabel);
     setEditingLabel(false);
   };
-
-  const [showActions, setShowActions] = useState(false);
 
   return (
     <View style={styles.card}>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Platform } from "react-native";
 
-export function NotasSection({ styles }: any) {
+export function NotesSection({ styles }: any) {
   const [nota, setNota] = useState("");
   const [inputHeight, setInputHeight] = useState(80);
 
