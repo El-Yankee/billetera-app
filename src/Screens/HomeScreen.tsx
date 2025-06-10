@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  ScrollView,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  KeyboardAvoidingView, // Agrega esto
-  Platform, // Agrega esto
-} from "react-native";
+import { Text, StyleSheet, TouchableOpacity, StatusBar } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useHomeTotales } from "../Context/TotalesContext";
 import { useBilleteras } from "../Context/BilleterasContext";
@@ -31,68 +24,71 @@ export default function HomeScreen({ navigation }: any) {
   } = useTransacciones();
 
   return (
-    <KeyboardAwareScrollView
-      style={styles.container}
-      contentContainerStyle={{ flexGrow: 1, justifyContent: "flex-start" }}
-      enableOnAndroid={true}
-      extraScrollHeight={300}
-      keyboardShouldPersistTaps="handled"
-    >
-      <Text style={styles.title}>Resumen de saldos</Text>
-
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("Details")}
+    <>
+      <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
+      <KeyboardAwareScrollView
+        style={styles.container}
+        contentContainerStyle={{ flexGrow: 1, justifyContent: "flex-start" }}
+        enableOnAndroid={true}
+        extraScrollHeight={300}
+        keyboardShouldPersistTaps="handled"
       >
-        <Text
-          style={{
-            textAlign: "center",
-            fontWeight: "bold",
-            fontSize: 18,
-            color: Colors.buttonText,
-          }}
+        <Text style={styles.title}>Resumen de saldos</Text>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("Details")}
         >
-          Agregar nueva transacción
-        </Text>
-      </TouchableOpacity>
+          <Text
+            style={{
+              textAlign: "center",
+              fontWeight: "bold",
+              fontSize: 18,
+              color: Colors.buttonText,
+            }}
+          >
+            Agregar nueva transacción
+          </Text>
+        </TouchableOpacity>
 
-      {/* Totales */}
-      <TotalesSection
-        totales={totales}
-        setTotales={setTotales}
-        styles={styles}
-      />
+        {/* Totales */}
+        <TotalesSection
+          totales={totales}
+          setTotales={setTotales}
+          styles={styles}
+        />
 
-      {/* Billeteras */}
-      <BilleterasSection
-        billeteras={billeteras}
-        setBilleteras={setBilleteras}
-        styles={styles}
-      />
+        {/* Billeteras */}
+        <BilleterasSection
+          billeteras={billeteras}
+          setBilleteras={setBilleteras}
+          styles={styles}
+        />
 
-      {/* Plata que me deben */}
-      <DeudasSection
-        deudas={deudas}
-        eliminarDeuda={eliminarDeuda}
-        styles={styles}
-        setDeudas={setDeudas}
-      />
+        {/* Plata que me deben */}
+        <DeudasSection
+          deudas={deudas}
+          eliminarDeuda={eliminarDeuda}
+          styles={styles}
+          setDeudas={setDeudas}
+        />
 
-      {/* Transacciones realizadas */}
-      <TransaccionesSection
-        transacciones={transacciones}
-        totales={totales}
-        billeteras={billeteras}
-        setTotales={setTotales}
-        setBilleteras={setBilleteras}
-        eliminarTransaccion={eliminarTransaccion}
-        styles={styles}
-        setTransacciones={setTransacciones}
-      />
+        {/* Transacciones realizadas */}
+        <TransaccionesSection
+          transacciones={transacciones}
+          totales={totales}
+          billeteras={billeteras}
+          setTotales={setTotales}
+          setBilleteras={setBilleteras}
+          eliminarTransaccion={eliminarTransaccion}
+          styles={styles}
+          setTransacciones={setTransacciones}
+        />
 
-      {/* Notas */}
-      <NotesSection styles={styles} />
-    </KeyboardAwareScrollView>
+        {/* Notas */}
+        <NotesSection styles={styles} />
+      </KeyboardAwareScrollView>
+    </>
   );
 }
 
