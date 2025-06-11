@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type Billetera = {
   id: number;
@@ -48,6 +49,19 @@ export const BilleterasProvider = ({
     },
     // ...agrega las demás billeteras iniciales aquí...
   ]);
+
+  // Cargar billeteras al iniciar
+  useEffect(() => {
+    (async () => {
+      const saved = await AsyncStorage.getItem("billeteras");
+      if (saved) setBilleteras(JSON.parse(saved));
+    })();
+  }, []);
+
+  // Guardar billeteras cuando cambian
+  useEffect(() => {
+    AsyncStorage.setItem("billeteras", JSON.stringify(billeteras));
+  }, [billeteras]);
 
   return (
     <BilleterasContext.Provider value={{ billeteras, setBilleteras }}>

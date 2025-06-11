@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "billeteras-app",
-    "slug": "billeteras-app",
+    "name": "Wallet Tracker",
+    "slug": "wallet-tracker",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/wallet.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
@@ -17,7 +17,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/wallet.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true

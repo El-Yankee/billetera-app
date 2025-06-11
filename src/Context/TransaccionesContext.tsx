@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createContext, useContext, useState, useEffect } from "react";
 
 const TransaccionesContext = createContext<any>(null);
 
@@ -9,6 +10,25 @@ export function TransaccionesProvider({
 }) {
   const [transacciones, setTransacciones] = useState<any[]>([]);
   const [deudas, setDeudas] = useState<any[]>([]);
+
+  // Cargar datos al iniciar
+  useEffect(() => {
+    (async () => {
+      const t = await AsyncStorage.getItem("transacciones");
+      const d = await AsyncStorage.getItem("deudas");
+      if (t) setTransacciones(JSON.parse(t));
+      if (d) setDeudas(JSON.parse(d));
+    })();
+  }, []);
+
+  // Guardar datos cuando cambian
+  useEffect(() => {
+    AsyncStorage.setItem("transacciones", JSON.stringify(transacciones));
+  }, [transacciones]);
+
+  useEffect(() => {
+    AsyncStorage.setItem("deudas", JSON.stringify(deudas));
+  }, [deudas]);
 
   const agregar = (transaccion: any) =>
     setTransacciones((prev) => [transaccion, ...prev]);

@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type Total = { id: number; label: string; value: number };
 
@@ -20,6 +21,19 @@ export const TotalesProvider = ({
     { id: 3, label: "Extras", value: 0 },
     { id: 4, label: "Dólares", value: 0 },
   ]);
+
+  // Cargar totales al iniciar
+  useEffect(() => {
+    (async () => {
+      const saved = await AsyncStorage.getItem("totales");
+      if (saved) setTotales(JSON.parse(saved));
+    })();
+  }, []);
+
+  // Guardar totales cuando cambian
+  useEffect(() => {
+    AsyncStorage.setItem("totales", JSON.stringify(totales));
+  }, [totales]);
 
   return (
     <TotalesContext.Provider value={{ totales, setTotales }}>
