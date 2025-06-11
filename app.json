@@ -20,10 +20,16 @@
         "foregroundImage": "./assets/wallet.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.el_yankee.wallettracker"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "0c178413-763a-4aed-8e4d-29212901b1ab"
+      }
     }
   }
 }
