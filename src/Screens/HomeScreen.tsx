@@ -1,6 +1,13 @@
 import React from "react";
-import { Text, StyleSheet, TouchableOpacity, StatusBar } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import {
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  StatusBar,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
+} from "react-native";
 import { useHomeTotales } from "../Context/TotalesContext";
 import { useBilleteras } from "../Context/BilleterasContext";
 import { useTransacciones } from "../Context/TransaccionesContext";
@@ -26,68 +33,71 @@ export default function HomeScreen({ navigation }: any) {
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
-      <KeyboardAwareScrollView
-        style={styles.container}
-        contentContainerStyle={{ flexGrow: 1, justifyContent: "flex-start" }}
-        enableOnAndroid={true}
-        extraScrollHeight={300}
-        keyboardShouldPersistTaps="handled"
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <Text style={styles.title}>Resumen de saldos</Text>
-
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("Details")}
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={{ flexGrow: 1, justifyContent: "flex-start" }}
+          keyboardShouldPersistTaps="handled"
         >
-          <Text
-            style={{
-              textAlign: "center",
-              fontWeight: "bold",
-              fontSize: 18,
-              color: Colors.buttonText,
-            }}
+          <Text style={styles.title}>Resumen de saldos</Text>
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate("Details")}
           >
-            Agregar nueva transacción
-          </Text>
-        </TouchableOpacity>
+            <Text
+              style={{
+                textAlign: "center",
+                fontWeight: "bold",
+                fontSize: 18,
+                color: Colors.buttonText,
+              }}
+            >
+              Agregar nueva transacción
+            </Text>
+          </TouchableOpacity>
 
-        {/* Totales */}
-        <TotalesSection
-          totales={totales}
-          setTotales={setTotales}
-          styles={styles}
-        />
+          {/* Totales */}
+          <TotalesSection
+            totales={totales}
+            setTotales={setTotales}
+            styles={styles}
+          />
 
-        {/* Billeteras */}
-        <BilleterasSection
-          billeteras={billeteras}
-          setBilleteras={setBilleteras}
-          styles={styles}
-        />
+          {/* Billeteras */}
+          <BilleterasSection
+            billeteras={billeteras}
+            setBilleteras={setBilleteras}
+            styles={styles}
+          />
 
-        {/* Plata que me deben */}
-        <DeudasSection
-          deudas={deudas}
-          eliminarDeuda={eliminarDeuda}
-          styles={styles}
-          setDeudas={setDeudas}
-        />
+          {/* Plata que me deben */}
+          <DeudasSection
+            deudas={deudas}
+            eliminarDeuda={eliminarDeuda}
+            styles={styles}
+            setDeudas={setDeudas}
+          />
 
-        {/* Transacciones realizadas */}
-        <TransaccionesSection
-          transacciones={transacciones}
-          totales={totales}
-          billeteras={billeteras}
-          setTotales={setTotales}
-          setBilleteras={setBilleteras}
-          eliminarTransaccion={eliminarTransaccion}
-          styles={styles}
-          setTransacciones={setTransacciones}
-        />
+          {/* Transacciones realizadas */}
+          <TransaccionesSection
+            transacciones={transacciones}
+            totales={totales}
+            billeteras={billeteras}
+            setTotales={setTotales}
+            setBilleteras={setBilleteras}
+            eliminarTransaccion={eliminarTransaccion}
+            styles={styles}
+            setTransacciones={setTransacciones}
+          />
 
-        {/* Notas */}
-        <NotesSection styles={styles} />
-      </KeyboardAwareScrollView>
+          {/* Notas */}
+          <NotesSection styles={styles} />
+        </ScrollView>
+      </KeyboardAvoidingView>
     </>
   );
 }
