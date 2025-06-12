@@ -10,23 +10,31 @@ type TotalesContextType = {
 
 const TotalesContext = createContext<TotalesContextType | undefined>(undefined);
 
+const totalesIniciales: Total[] = [{ id: 1, label: "Plata", value: 0 }];
+
 export const TotalesProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const [totales, setTotales] = useState<Total[]>([
-    { id: 1, label: "Comida Santi", value: 0 },
-    { id: 2, label: "Comida Cami", value: 0 },
-    { id: 3, label: "Extras", value: 0 },
-    { id: 4, label: "Dólares", value: 0 },
-  ]);
+  const [totales, setTotales] = useState<Total[]>(totalesIniciales);
 
-  // Cargar totales al iniciar
+  // Cargar totales al iniciar con manejo de errores
   useEffect(() => {
     (async () => {
-      const saved = await AsyncStorage.getItem("totales");
-      if (saved) setTotales(JSON.parse(saved));
+      try {
+        const saved = await AsyncStorage.getItem("totales");
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed)) {
+            setTotales(parsed);
+          } else {
+            setTotales(totalesIniciales);
+          }
+        }
+      } catch (e) {
+        setTotales(totalesIniciales);
+      }
     })();
   }, []);
 

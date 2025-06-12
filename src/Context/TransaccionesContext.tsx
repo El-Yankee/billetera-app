@@ -11,13 +11,35 @@ export function TransaccionesProvider({
   const [transacciones, setTransacciones] = useState<any[]>([]);
   const [deudas, setDeudas] = useState<any[]>([]);
 
-  // Cargar datos al iniciar
+  // Cargar datos al iniciar con manejo de errores
   useEffect(() => {
     (async () => {
-      const t = await AsyncStorage.getItem("transacciones");
-      const d = await AsyncStorage.getItem("deudas");
-      if (t) setTransacciones(JSON.parse(t));
-      if (d) setDeudas(JSON.parse(d));
+      try {
+        const t = await AsyncStorage.getItem("transacciones");
+        if (t) {
+          const parsedT = JSON.parse(t);
+          if (Array.isArray(parsedT)) {
+            setTransacciones(parsedT);
+          } else {
+            setTransacciones([]);
+          }
+        }
+      } catch (e) {
+        setTransacciones([]);
+      }
+      try {
+        const d = await AsyncStorage.getItem("deudas");
+        if (d) {
+          const parsedD = JSON.parse(d);
+          if (Array.isArray(parsedD)) {
+            setDeudas(parsedD);
+          } else {
+            setDeudas([]);
+          }
+        }
+      } catch (e) {
+        setDeudas([]);
+      }
     })();
   }, []);
 
@@ -36,8 +58,6 @@ export function TransaccionesProvider({
   const eliminarDeuda = (index: number) => {
     setDeudas((prev) => prev.filter((_, i) => i !== index));
   };
-
-  // NUEVO: función para eliminar transacción
   const eliminarTransaccion = (index: number) => {
     setTransacciones((prev) => prev.filter((_, i) => i !== index));
   };
@@ -50,9 +70,9 @@ export function TransaccionesProvider({
         deudas,
         agregarDeuda,
         eliminarDeuda,
-        eliminarTransaccion, // <-- agrega aquí
-        setDeudas, // <-- agrega aquí si necesitas modificar deudas desde otros componentes
-        setTransacciones, // <-- agrega aquí si necesitas modificar transacciones desde otros componentes
+        eliminarTransaccion,
+        setDeudas,
+        setTransacciones,
       }}
     >
       {children}

@@ -16,45 +16,39 @@ const BilleterasContext = createContext<BilleterasContextType | undefined>(
   undefined
 );
 
+const billeterasIniciales: Billetera[] = [
+  { id: 1, label: "Efectivo", value: 0 },
+  { id: 2, label: "Mercado Pago", value: 0 },
+  { id: 3, label: "Personal Pay", value: 0 },
+  { id: 4, label: "Ualá", value: 0 },
+  { id: 5, label: "Astropay", value: 0 },
+  // ...agrega las demás billeteras iniciales aquí...
+];
+
 export const BilleterasProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const [billeteras, setBilleteras] = useState<Billetera[]>([
-    {
-      id: 1,
-      label: "Efectivo",
-      value: 0,
-    },
-    {
-      id: 2,
-      label: "Mercado Pago",
-      value: 0,
-    },
-    {
-      id: 3,
-      label: "Personal Pay",
-      value: 0,
-    },
-    {
-      id: 4,
-      label: "Ualá",
-      value: 0,
-    },
-    {
-      id: 5,
-      label: "Astropay",
-      value: 0,
-    },
-    // ...agrega las demás billeteras iniciales aquí...
-  ]);
+  const [billeteras, setBilleteras] =
+    useState<Billetera[]>(billeterasIniciales);
 
   // Cargar billeteras al iniciar
   useEffect(() => {
     (async () => {
-      const saved = await AsyncStorage.getItem("billeteras");
-      if (saved) setBilleteras(JSON.parse(saved));
+      try {
+        const saved = await AsyncStorage.getItem("billeteras");
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed)) {
+            setBilleteras(parsed);
+          } else {
+            setBilleteras(billeterasIniciales);
+          }
+        }
+      } catch (e) {
+        setBilleteras(billeterasIniciales);
+      }
     })();
   }, []);
 
